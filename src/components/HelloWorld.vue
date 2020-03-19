@@ -37,8 +37,16 @@ export default {
     msg: String
   },
   mounted() {
-    var string = device.platform;
-    alert(string)
+    alert(666)
+    // var string = device.platform;
+    document.addEventListener("deviceready", onDeviceReady, false);
+function onDeviceReady() {
+  alert(112)
+    console.log(device.cordova);
+    alert(device.platform)
+    alert(777)
+}
+    // alert(string)
   },
 }
 </script>

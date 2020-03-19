@@ -19,3 +19,9 @@ yarn run build
 ```
 yarn run lint
 ```
+### ios  dabao
+```
+1. yarn cordova-build-ios
+2.cordova build ios --debug --device   (test)
+2.cordova build ios --release --device   (build)
+```
