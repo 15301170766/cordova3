@@ -1,11 +1,10 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-   <h2 @click="iosInit">初始化</h2>
-   <h2 @click="iosRegistration">注册id</h2>
-   <h2 @click="iosUnRegistration">取消注册id</h2>
-   <h2 @click="initAregistration">初始化+注册</h2>
-   <h2 @click="initAunregistration">初始化+取消注册</h2>
+   <h2 @click="iosRegistration">初始化+注册id</h2>
+   <h2 @click="iosUnRegistration">初始化+取消注册id</h2>
+   <h2 @click="iosWatchNotification">初始化+监听事件</h2>
+   <textarea v-model="device_token" name="" id="" cols="30" rows="10"></textarea>
   </div>
 </template>
 

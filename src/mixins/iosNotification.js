@@ -1,4 +1,5 @@
 // ios的推送事件
+// 不需要将init()与push事件分开，每次动作前先初始化，并不会影响结果
 import Qs from 'qs'
 import axios from 'axios';
 let push;
@@ -10,11 +11,9 @@ export default{
         }
     },
     methods: {
-      iosInit(){ // 初始化通知
-        document.addEventListener("deviceready", this.onDeviceReady(), false);
-      },
-      onDeviceReady(){
-        push = PushNotification.init({
+      iosWatchNotification(){
+        document.addEventListener("deviceready", ()=>{
+          push = PushNotification.init({
             ios: {
               alert: 'true',
               badge: true,
@@ -22,9 +21,21 @@ export default{
             }
           });
           alert('初始化成功')
+          push.on('notification', data => {
+            alert(data.message);
+            console.log(data.title);
+            console.log(data.count);
+            console.log(data.sound);
+            console.log(data.image);
+            console.log(data.additionalData);
+          });
+          alert('监听成功')
+        }, false);
+        
       },
-      onDeviceReady2(){
-        push = PushNotification.init({
+      iosRegistration(){
+        document.addEventListener("deviceready", ()=>{
+          push = PushNotification.init({
             ios: {
               alert: 'true',
               badge: true,
@@ -32,10 +43,17 @@ export default{
             }
           });
           alert('初始化成功')
-          this.iosRegistration()
+          push.on('registration', async data => {
+              this.device_token = data.registrationId;
+              this.registrationType = data.registrationType;
+              alert(data.registrationId);
+              alert(data.registrationType);
+          })
+        }, false);
       },
-      onDeviceReady3(){
-        push = PushNotification.init({
+      iosUnRegistration(){
+        document.addEventListener("deviceready", ()=>{
+          push = PushNotification.init({
             ios: {
               alert: 'true',
               badge: true,
@@ -57,52 +75,7 @@ export default{
 
             }
           );
-      },
-      iosRegistration(){ //注冊id
-        push.on('registration', async data => {
-            this.device_token = data.registrationId;
-            this.registrationType = data.registrationType;
-            alert(data.registrationId);
-            alert(data.registrationType);
-        })
-      },
-      iosUnRegistration(){ // 取消注冊
-        if(this.device_token){
-
-            push.unregister(
-                () => {
-                //   console.log('success');
-                  this.device_token = "";
-                  this.registrationType = "";
-                  alert('id已清空')
-
-                },
-                () => {
-                  console.log('error');
-                  alert('取消失败')
-
-                }
-              );
-        }else{
-          alert('没有id请先注册')
-
-        }
-      },
-      iosWatchNotification(){
-        push.on('notification', data => {
-            console.log(data.message);
-            console.log(data.title);
-            console.log(data.count);
-            console.log(data.sound);
-            console.log(data.image);
-            console.log(data.additionalData);
-          });
-      },
-      initAregistration(){
-        document.addEventListener("deviceready", this.onDeviceReady2(), false);
-      },
-      initAunregistration(){
-        document.addEventListener("deviceready", this.onDeviceReady3(), false);
+        }, false);
       },
       async iosPushOther(title,body,device_token){ //給對方發送通知
         let data = Qs.stringify({  
